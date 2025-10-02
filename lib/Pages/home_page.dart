@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                       animatedTexts: [
                         TypewriterAnimatedText(
                           'Hey Jose..',
-                          speed: Duration(milliseconds: 80),
+                          speed: Duration(milliseconds: 120),
                           cursor: '|',textStyle: TextStyle(
                             fontSize: 20,
                             color: Colors.black,
