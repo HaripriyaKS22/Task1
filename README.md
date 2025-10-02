@@ -1,16 +1,17 @@
-# task_1
+# Setup Instructions
 
-A new Flutter project.
+- git clone https://github.com/HaripriyaKS22/Task1.git
+- cd task1
+- flutter pub get
+- flutter run
 
-## Getting Started
+# Steps
 
-This project is a starting point for a Flutter application.
+- Created an app called Task1.
+- Added a new folder inside lib called page, where all the main screens are organized.
+- Created Login, Home, and Popup Dialog screens according to the provided designs.
+   
+   Login → Home
+   Home → Popup
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Used named routes for smooth navigation
