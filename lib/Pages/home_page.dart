@@ -44,109 +44,111 @@ class _HomePageState extends State<HomePage> {
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.menu, color: Colors.black),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.download, color: Colors.black),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              
-               Row(
-                 children: [
-                   Padding(
-                     padding: const EdgeInsets.only(left: 13,right: 13),
-                     child: AnimatedTextKit(
-                      animatedTexts: [
-                        TypewriterAnimatedText(
-                          'Hey Jose..',
-                          speed: Duration(milliseconds: 120),
-                          cursor: '|',textStyle: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                      totalRepeatCount: 1, 
-                      pause: Duration(milliseconds: 800),
-                      displayFullTextOnTap: true,
-                      stopPauseOnTap: true,
-                                   ),
-                   ),
-                   Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 12),
-                      child: CircleAvatar(
-                      radius: 25,
-                      backgroundColor: Colors.white,
-                      backgroundImage: AssetImage('lib/assets/profile.png'),
-                                        ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.menu, color: Colors.black),
+                      onPressed: () {},
                     ),
-                  
-                 ],
-               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: Text(
-                  DateFormat('EEEE, d MMM').format(DateTime.now()),
-                  style: const TextStyle(
-                    fontSize: 15,
-                    color: Colors.black54,
+                    IconButton(
+                      icon: const Icon(Icons.download, color: Colors.black),
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                
+                 Row(
+                   children: [
+                     Padding(
+                       padding: const EdgeInsets.only(left: 13,right: 13),
+                       child: AnimatedTextKit(
+                        animatedTexts: [
+                          TypewriterAnimatedText(
+                            'Hey Jose..',
+                            speed: Duration(milliseconds: 120),
+                            cursor: '|',textStyle: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                        totalRepeatCount: 1, 
+                        pause: Duration(milliseconds: 800),
+                        displayFullTextOnTap: true,
+                        stopPauseOnTap: true,
+                                     ),
+                     ),
+                     Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 12),
+                        child: CircleAvatar(
+                        radius: 25,
+                        backgroundColor: Colors.white,
+                        backgroundImage: AssetImage('lib/assets/profile.png'),
+                                          ),
+                      ),
+                    
+                   ],
+                 ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Text(
+                    DateFormat('EEEE, d MMM').format(DateTime.now()),
+                    style: const TextStyle(
+                      fontSize: 15,
+                      color: Colors.black54,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 5),
-              
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Container(
-                  height: 100,
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(121, 18, 18, 18),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    children: [
-                      const SizedBox(height:10),
-                      Text("Working Hours",style: TextStyle(fontSize: 14,color: Colors.white),),
-                      const SizedBox(height:5),
-                      Text("00:00:00 Hrs",style: TextStyle(fontSize: 25,color: Colors.white),),
-                    ],
-                  )
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                  
-                    Navigator.pushNamed(context, 'popup/');
-
-                          },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFD2815E),
-                    minimumSize: const Size(double.infinity, 50),
-                    shape: RoundedRectangleBorder(
+                const SizedBox(height: 5),
+                
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Container(
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(121, 18, 18, 18),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                  ),
-                  child: const Text(
-                    "Manul Check-in",
-                    style: TextStyle(fontSize: 15, color: Colors.white),
+                    child: Column(
+                      children: [
+                        const SizedBox(height:10),
+                        Text("Working Hours",style: TextStyle(fontSize: 14,color: Colors.white),),
+                        const SizedBox(height:5),
+                        Text("00:00:00 Hrs",style: TextStyle(fontSize: 25,color: Colors.white),),
+                      ],
+                    )
                   ),
                 ),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                    
+                      Navigator.pushNamed(context, 'popup/');
+            
+                            },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFFD2815E),
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text(
+                      "Manul Check-in",
+                      style: TextStyle(fontSize: 15, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
