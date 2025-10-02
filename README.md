@@ -15,3 +15,4 @@
    Home → Popup
 
 - Used named routes for smooth navigation
+- Used setState for simple state management
