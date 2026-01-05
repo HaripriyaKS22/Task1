@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task_1/Pages/home_page.dart';
 
 class PopUpPage extends StatefulWidget {
   const PopUpPage({super.key});
@@ -10,6 +12,7 @@ class PopUpPage extends StatefulWidget {
 }
 List<String> projects=['Project1','Project2','Project3'];
 String? Selectedproject;
+bool isChecked=false;
 
 List<String> Gates=['Gate1','Gate2'];
 String? Selectedgate;
@@ -155,9 +158,12 @@ class _PopUpPageState extends State<PopUpPage> {
                   
         
                    ElevatedButton(
-                     onPressed: () {
-                     
-                   
+                     onPressed: () async{
+                      isChecked=true;
+                      final  SharedPreferences pref = await SharedPreferences.getInstance();
+                      pref.setBool('isChecked', isChecked);
+
+                          Navigator.pushNamed(context, 'home/');
                              },
                      style: ElevatedButton.styleFrom(
                        backgroundColor: Color(0xFFD2815E),

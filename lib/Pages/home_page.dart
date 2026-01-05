@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_1/Pages/pop_up_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,11 +15,72 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+Timer? _timer;
+bool isRunning = false;
+Duration _duration = const Duration(seconds: 1);
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+String _timerString = "00:00:00";
+  @override
+  void initState() {
+    super.initState();
+    initdata();
+    print('HomePage initState called$_duration');
+   
+
+  }
+
+  void initdata() async {
+   await fetchuserData();
+
+    if(isChecked){
+      print('isChecked found true in SharedPreferences');
+      print('isChecked is true, starting timer');
+          await startTimer();
+     setState(() {
+      isRunning = isChecked;
+      });
+    }
+    else{
+      print('isChecked is false, not starting timer');}
+     
+  }
+ 
+
+ Future<void> startTimer() async {
+    _timer = Timer.periodic(_duration, (timer) {
+      setState(() {
+        final hours = timer.tick ~/ 3600;
+        final minutes = (timer.tick % 3600) ~/ 60;
+        final seconds = timer.tick % 60;
+        _timerString =
+            '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+      });
+    });
+  }
+
+
+ String? firstName;
+  String? lastName;
+  late bool isChecked;
+   String? button;
+  Future<void> fetchuserData() async{
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? username = prefs.getString('username');
+     firstName = prefs.getString('firstName');
+     lastName = prefs.getString('lastName');
+      isChecked = prefs.getBool('isChecked') ?? false;
+
+    print('Fetched username: $username');
+    print('Fetched firstName: $firstName');
+    print('Fetched lastName: $lastName');
+    setState(() {});
   }
 
   @override
@@ -69,9 +133,10 @@ class _HomePageState extends State<HomePage> {
                        padding: const EdgeInsets.only(left: 13,right: 13),
                        child: AnimatedTextKit(
                         animatedTexts: [
+                          if (firstName != null && lastName != null)
                           TypewriterAnimatedText(
-                            'Hey Jose..',
-                            speed: Duration(milliseconds: 120),
+                            '$firstName $lastName',
+                            speed: Duration(milliseconds: 140),
                             cursor: '|',textStyle: TextStyle(
                               fontSize: 20,
                               color: Colors.black,
@@ -121,32 +186,51 @@ class _HomePageState extends State<HomePage> {
                         const SizedBox(height:10),
                         Text("Working Hours",style: TextStyle(fontSize: 14,color: Colors.white),),
                         const SizedBox(height:5),
-                        Text("00:00:00 Hrs",style: TextStyle(fontSize: 25,color: Colors.white),),
+                        Text("$_timerString Hrs",style: TextStyle(fontSize: 25,color: Colors.white),),
                       ],
                     )
                   ),
                 ),
+               
+
                 Padding(
+
                   padding: const EdgeInsets.all(15.0),
                   child: ElevatedButton(
                     onPressed: () {
-                    
-                      Navigator.pushNamed(context, 'popup/');
+
+                    if (isChecked) {
+                      setState(() {
+                        isRunning = false;
+                        isChecked = false;
+                        _timerString = "00:00:00";
+                        _timer?.cancel();
+
+                      });
+                      null;
+                    }
+                    else{
+                      Navigator.pushNamed(context, 'popup/');}
             
                             },
                     style: ElevatedButton.styleFrom(
+                      
                       backgroundColor: Color(0xFFD2815E),
+                      disabledBackgroundColor: Colors.grey,
+
                       minimumSize: const Size(double.infinity, 50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: const Text(
+                    child:  Text(
+                      isRunning ? "Checked-Out" :
                       "Manul Check-in",
                       style: TextStyle(fontSize: 15, color: Colors.white),
                     ),
                   ),
                 ),
+
               ],
             ),
           ),

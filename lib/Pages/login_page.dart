@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -10,8 +13,57 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   
-  final TextEditingController _phone = TextEditingController();
+  final TextEditingController _username = TextEditingController();
+  final TextEditingController _passcode = TextEditingController();
      bool rememberMe = false; 
+
+var url = 'https://dummyjson.com/auth/login'; 
+
+Future login(String username, String password, BuildContext context) async {
+  print('Login function called with username: $username and password: $password');
+  try {
+    var response = await http.post(
+      Uri.parse(url),
+      body: {
+        "username": username, "password": password
+        },
+    );
+
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
+    if (response.statusCode == 200) {
+      print('Login successful');
+      var responseData = jsonDecode(response.body);
+       String accessToken = responseData['accessToken'];
+       String username = responseData['username'];
+       String firstname =responseData['firstName'];
+       String lastname =responseData['lastName'];
+         final SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('accessToken', accessToken);
+        await prefs.setString('username', username);  
+        await prefs.setString('firstName', firstname);
+        await prefs.setString('lastName', lastname);
+       Navigator.pushNamed(context, 'home/');
+      print('Login successful. Access Token: $accessToken');
+     
+    } else {
+      print('Login failed with status: ${response.statusCode}');
+      String errorMessage = 'An error occurred. Please try againnnnnnn.';
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(backgroundColor: Colors.red, content: Text(errorMessage)),
+      );
+    }
+  } catch (e) {
+    print('An exception occurred: $e');
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(backgroundColor: Colors.red, content: Text('An error occurred. Please try again.')),
+    );
+  }
+}
+
+
+
   
   @override
   Widget build(BuildContext context) {
@@ -42,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Phone number",style: TextStyle(fontSize: 12),),
+                  Text("username",style: TextStyle(fontSize: 12),),
                 ],
               ),
               const SizedBox(height: 10,),
@@ -56,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                     borderRadius: BorderRadius.circular(10), 
                   )
                 ),
-                controller: _phone,
+                controller: _username,
         
               ),
               const SizedBox(height: 10,),
@@ -72,18 +124,33 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  OtpTextField(
-                    numberOfFields: 4,
-                    borderColor: Color(0xFFD2815E),
-                    showFieldAsBox: true,
-                    borderWidth: 1.0,
-                    fieldHeight: 45,
-                    fieldWidth: 45,
-                    textStyle: const TextStyle(fontSize: 10),
-                    onCodeChanged: (String code) {
-                    },
+                  // OtpTextField(
+                  //   numberOfFields: 4,
+                  //   borderColor: Color(0xFFD2815E),
+                  //   showFieldAsBox: true,
+                  //   borderWidth: 1.0,
+                  //   fieldHeight: 45,
+                  //   fieldWidth: 45,
+                  //   textStyle: const TextStyle(fontSize: 10),
+                  //   onCodeChanged: (String code) {
+                  //   },
                     
-                  ),
+                  // ),
+                  Expanded(
+                    child: TextField(
+                      controller: _passcode,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.orange,
+                            width: 1.0,
+                          ),
+                          borderRadius: BorderRadius.circular(10), 
+                        )
+                      ),
+                    ),
+                  )
                 ],
               ),
               const SizedBox(height: 10,),
@@ -118,7 +185,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 30,),
               ElevatedButton(onPressed: (){
-                Navigator.pushNamed(context, 'home/');
+                login(_username.text, _passcode.text, context);
+                // Navigator.pushNamed(context, 'home/');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFFD2815E),
